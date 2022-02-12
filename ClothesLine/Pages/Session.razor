@@ -1,0 +1,10 @@
+﻿@page "/session/{Id}";
+
+<h1>Planning Session</h1>
+
+<p>This is session @Id</p>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+}
