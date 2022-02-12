@@ -1,0 +1,21 @@
+﻿@page "/joinsession"
+
+@inject NavigationManager navManager;
+
+<h1>Join Session</h1>
+
+<p>Enter a join code below to join your session.</p>
+
+<EditForm Model="@joinCode" OnSubmit="@HandleJoin">
+    <p>Session code <InputText @bind-Value="joinCode" /></p>
+    <button type="submit">Join</button>
+</EditForm>
+
+@code {
+    private string joinCode = string.Empty;
+
+    private void HandleJoin()
+    {
+        navManager.NavigateTo($"session/{joinCode}");
+    }
+}

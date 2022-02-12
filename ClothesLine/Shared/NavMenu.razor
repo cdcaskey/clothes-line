@@ -1,4 +1,8 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using System.Text.RegularExpressions;
+
+@inject NavigationManager navManager;
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">ClothesLine</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -13,22 +17,40 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" href="newsession">
+                <span class="oi oi-plus" aria-hidden="true"></span> New Session
             </NavLink>
         </li>
+
+        @if (Regex.IsMatch(navManager.Uri, "session/[A-z0-9]+"))
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link active" href="@navigateToSelfUri">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Current Session
+                </NavLink>
+            </li>
+        }
+
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            <NavLink class="nav-link" href="joinsession">
+                <span class="oi oi-people" aria-hidden="true"></span> Join Session
             </NavLink>
         </li>
     </ul>
 </div>
 
 @code {
+
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private string navigateToSelfUri => navManager.Uri.EndsWith("/#") ? navManager.Uri : navManager.Uri + "/#";
+
+    protected override void OnInitialized()
+    {
+        navManager.LocationChanged += (s, e) => StateHasChanged();
+    }
 
     private void ToggleNavMenu()
     {
