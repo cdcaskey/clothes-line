@@ -20,11 +20,7 @@ namespace ClothesLine.Hubs
         {
             connections.Add(Context.ConnectionId, sessionId, name);
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
-
-            var groupMembers = connections.GetBySession(sessionId);
-            var payload = JsonSerializer.Serialize(groupMembers, typeof(IEnumerable<ConnectedClient>));
-
-            await Clients.Group(sessionId).SendAsync(Methods.NotifyUpdatedClients, payload);
+            await UpdateGroup(sessionId);
         }
 
         public async Task RequestData(string sessionId)
@@ -49,8 +45,17 @@ namespace ClothesLine.Hubs
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            connections.Remove(Context.ConnectionId);
+            connections.Remove(Context.ConnectionId, out var connection);
+            await UpdateGroup(connection.Session);
             await base.OnDisconnectedAsync(exception);
+        }
+
+        private async Task UpdateGroup(string sessionId)
+        {
+            var groupMembers = connections.GetBySession(sessionId);
+            var payload = JsonSerializer.Serialize(groupMembers, typeof(IEnumerable<ConnectedClient>));
+
+            await Clients.Group(sessionId).SendAsync(Methods.NotifyUpdatedClients, payload);
         }
     }
 }
