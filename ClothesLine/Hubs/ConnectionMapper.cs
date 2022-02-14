@@ -28,6 +28,14 @@ namespace ClothesLine.Hubs
             }
         }
 
+        public void ClearEstimates(string sessionId)
+        {
+            foreach (var client in connections.Where(c => c.Value.Session == sessionId))
+            {
+                client.Value.Estimate = null;
+            }
+        }
+
         public void Remove(string connectionId)
         {
             connections.TryRemove(connectionId, out _);
