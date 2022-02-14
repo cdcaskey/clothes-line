@@ -41,6 +41,12 @@ namespace ClothesLine.Hubs
             await Clients.Group(sessionId).SendAsync(Methods.ReceiveEstimate, Context.ConnectionId, estimate);
         }
 
+        public async Task ClearEstimates(string sessionId)
+        {
+            connections.ClearEstimates(sessionId);
+            await Clients.Group(sessionId).SendAsync(Methods.ClearEstimates);
+        }
+
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             connections.Remove(Context.ConnectionId);
