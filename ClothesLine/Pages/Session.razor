@@ -11,10 +11,23 @@
 <p>This is session @Id</p>
 
 <div class="form-group">
-    <label>
-        Message:
-        <input type="number" @bind="estimate" size="50" />
-    </label>
+    <EditForm Model="estimate">
+        <InputRadioGroup @bind-Value="estimate">
+            @foreach (var option in options)
+            {
+                <InputRadio Value="@option.Key" id="@option.Key" class="btn-check d-none" />
+
+                if (option.Key == estimate)
+                {
+                    <label for="@option.Key" class="btn btn-primary mr-2">@option.Value</label>
+                }
+                else
+                {
+                    <label for="@option.Key" class="btn btn-outline-primary mr-2">@option.Value</label>
+                }
+            }
+        </InputRadioGroup>
+    </EditForm>
 </div>
 <button @onclick="SendEstimate" disabled="@(!IsConnected)">Send</button>
 <button @onclick="ClearEstimates">Clear Estimates</button>
@@ -24,7 +37,7 @@
     {
         if (estimates.TryGetValue(connection.Key, out var estimate))
         {
-            <li>@connection.Value (@estimate)</li>
+            <li>@connection.Value (@options[estimate])</li>
         }
         else
         {
@@ -35,9 +48,21 @@
 
 @code {
     private HubConnection? hubConnection;
-    private int estimate;
+    private int? estimate;
     private Dictionary<string, string> connections = new Dictionary<string, string>();
     private Dictionary<string, int> estimates = new Dictionary<string, int>();
+    private Dictionary<int, string> options = new Dictionary<int, string>
+{
+        { 0, "0" },
+        { 1, "XS" },
+        { 2, "S" },
+        { 3, "M" },
+        { 5, "L" },
+        { 8, "XL" },
+        { 13, "XXL" },
+        { 20, "Too Big" },
+        { 100, "?" },
+    };
 
     [Parameter]
     public string Id { get; set; }
@@ -103,6 +128,7 @@
         hubConnection.On(Methods.ClearEstimates, () =>
         {
             estimates.Clear();
+            estimate = null;
             StateHasChanged();
         });
     }

@@ -36,9 +36,9 @@ namespace ClothesLine.Hubs
             }
         }
 
-        public void Remove(string connectionId)
+        public void Remove(string connectionId, out ConnectedClient removedConnection)
         {
-            connections.TryRemove(connectionId, out _);
+            connections.TryRemove(connectionId, out removedConnection);
         }
     }
 }
