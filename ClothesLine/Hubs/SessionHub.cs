@@ -27,9 +27,18 @@ namespace ClothesLine.Hubs
             await Clients.Group(sessionId).SendAsync(Methods.NotifyUpdatedClients, payload);
         }
 
+        public async Task RequestData(string sessionId)
+        {
+            var groupMembers = connections.GetBySession(sessionId);
+            var payload = JsonSerializer.Serialize(groupMembers, typeof(IEnumerable<ConnectedClient>));
+
+            await Clients.Caller.SendAsync(Methods.NotifyUpdatedClients, payload);
+        }
+
         public async Task SendEstimate(string sessionId, int estimate)
         {
-            await Clients.Group(sessionId).SendAsync(Methods.ReceiveEstimate, estimate);
+            connections.SetEstimate(Context.ConnectionId, estimate);
+            await Clients.Group(sessionId).SendAsync(Methods.ReceiveEstimate, Context.ConnectionId, estimate);
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)

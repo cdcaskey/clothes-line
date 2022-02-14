@@ -7,5 +7,7 @@
         public string Session { get; set; }
 
         public string Name { get; set; }
+
+        public int? Estimate { get; set; }
     }
 }

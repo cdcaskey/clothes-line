@@ -21,14 +21,14 @@
 <ul>
     @foreach (var connection in connections)
     {
-        <li>@connection.Key (@connection.Value)</li>
-    }
-</ul>
-
-<ul>
-    @foreach (var estimate in estimates)
-    {
-        <li>@estimate</li>
+        if (estimates.TryGetValue(connection.Key, out var estimate))
+        {
+            <li>@connection.Value (@estimate)</li>
+        }
+        else
+        {
+            <li>@connection.Value</li>
+        }
     }
 </ul>
 
@@ -36,7 +36,7 @@
     private HubConnection? hubConnection;
     private int estimate;
     private Dictionary<string, string> connections = new Dictionary<string, string>();
-    private List<int> estimates = new List<int>();
+    private Dictionary<string, int> estimates = new Dictionary<string, int>();
 
     [Parameter]
     public string Id { get; set; }
@@ -59,19 +59,43 @@
         await hubConnection.SendAsync(Methods.JoinSession, Id, Name);
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await hubConnection.SendAsync(Methods.RequestData, Id);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
     private void SetupHubMethods()
     {
         hubConnection.On<string>(Methods.NotifyUpdatedClients, json =>
         {
-            var connectedClients = JsonSerializer.Deserialize(json, typeof(IEnumerable<ConnectedClient>));
+            var connectedClients = (IEnumerable<ConnectedClient>)JsonSerializer.Deserialize(json, typeof(IEnumerable<ConnectedClient>));
 
-            connections = new Dictionary<string, string>(((IEnumerable<ConnectedClient>)connectedClients).Select(c => new KeyValuePair<string, string>(c.Id, c.Name)));
+            connections = new Dictionary<string, string>(connectedClients.Select(c => new KeyValuePair<string, string>(c.Id, c.Name)));
+
+            if (!estimates.Any())
+            {
+                estimates = new Dictionary<string, int>();
+
+                foreach (var client in connectedClients)
+                {
+                    if (client.Estimate != null)
+                    {
+                        estimates.Add(client.Id, client.Estimate.Value);
+                    }
+                }
+            }
+
             StateHasChanged();
         });
 
-        hubConnection.On<int>(Methods.ReceiveEstimate, estimation =>
+        hubConnection.On<string, int>(Methods.ReceiveEstimate, (estimator, estimate) =>
         {
-            estimates.Add(estimation);
+            estimates[estimator] = estimate;
             StateHasChanged();
         });
     }

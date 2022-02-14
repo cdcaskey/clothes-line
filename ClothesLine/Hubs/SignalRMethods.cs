@@ -8,6 +8,8 @@
 
             public const string NotifyUpdatedClients = "NotifyUpdatedClients";
 
+            public const string RequestData = "RequestData";
+
             public const string SendEstimate = "SendEstimate";
             public const string ReceiveEstimate = "ReceiveEstimate";
         }
