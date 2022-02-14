@@ -20,6 +20,14 @@ namespace ClothesLine.Hubs
         public IEnumerable<ConnectedClient> GetBySession(string sessionId) =>
             connections.Values.Where(v => v.Session == sessionId);
 
+        public void SetEstimate(string connectionId, int estimate)
+        {
+            if (connections.TryGetValue(connectionId, out var client))
+            {
+                client.Estimate = estimate;
+            }
+        }
+
         public void Remove(string connectionId)
         {
             connections.TryRemove(connectionId, out _);
