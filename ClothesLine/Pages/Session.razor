@@ -1,10 +1,94 @@
-﻿@page "/session/{Id}";
+﻿@page "/session/{Id}/{Name}"
+@using System.Text.Json
+@using ClothesLine.Hubs
+@using Microsoft.AspNetCore.SignalR.Client
+@using Methods = ClothesLine.Hubs.SignalRMethods.Session
+@inject NavigationManager navManager
+@implements IAsyncDisposable
 
 <h1>Planning Session</h1>
 
 <p>This is session @Id</p>
 
+<div class="form-group">
+    <label>
+        Message:
+        <input type="number" @bind="estimate" size="50" />
+    </label>
+</div>
+<button @onclick="SendEstimate" disabled="@(!IsConnected)">Send</button>
+
+<ul>
+    @foreach (var connection in connections)
+    {
+        <li>@connection.Key (@connection.Value)</li>
+    }
+</ul>
+
+<ul>
+    @foreach (var estimate in estimates)
+    {
+        <li>@estimate</li>
+    }
+</ul>
+
 @code {
+    private HubConnection? hubConnection;
+    private int estimate;
+    private Dictionary<string, string> connections = new Dictionary<string, string>();
+    private List<int> estimates = new List<int>();
+
     [Parameter]
     public string Id { get; set; }
+
+    [Parameter]
+    public string Name { get; set; }
+
+    public bool IsConnected =>
+        hubConnection?.State == HubConnectionState.Connected;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(navManager.ToAbsoluteUri("/sessionhub"))
+            .Build();
+
+        SetupHubMethods();
+
+        await hubConnection.StartAsync();
+        await hubConnection.SendAsync(Methods.JoinSession, Id, Name);
+    }
+
+    private void SetupHubMethods()
+    {
+        hubConnection.On<string>(Methods.NotifyUpdatedClients, json =>
+        {
+            var connectedClients = JsonSerializer.Deserialize(json, typeof(IEnumerable<ConnectedClient>));
+
+            connections = new Dictionary<string, string>(((IEnumerable<ConnectedClient>)connectedClients).Select(c => new KeyValuePair<string, string>(c.Id, c.Name)));
+            StateHasChanged();
+        });
+
+        hubConnection.On<int>(Methods.ReceiveEstimate, estimation =>
+        {
+            estimates.Add(estimation);
+            StateHasChanged();
+        });
+    }
+
+    private async Task SendEstimate()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.SendAsync(Methods.SendEstimate, Id, estimate);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
 }

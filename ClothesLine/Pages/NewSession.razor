@@ -1,8 +1,20 @@
 ﻿@page "/newsession"
+@inject NavigationManager navManager
 
 <h1>Planning Session</h1>
 
 <p>This will be a planning session</p>
 
+<EditForm Model="@name" OnSubmit="@CreateSession">
+    <p>Name <InputText @bind-Value="name" /></p>
+    <button type="submit">Create Session</button>
+</EditForm>
+
 @code {
+    private string name = string.Empty;
+
+    private void CreateSession()
+    {
+        navManager.NavigateTo($"session/{Guid.NewGuid().ToString().Substring(0, 6)}/{name}");
+    }
 }
