@@ -18,6 +18,11 @@ namespace ClothesLine.Hubs
 
         public async Task JoinSession(string sessionId, string name)
         {
+            if (name.Equals("andy", StringComparison.InvariantCultureIgnoreCase))
+            {
+                name = "Candy";
+            }
+
             connections.Add(Context.ConnectionId, sessionId, name);
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
             await UpdateGroup(sessionId);

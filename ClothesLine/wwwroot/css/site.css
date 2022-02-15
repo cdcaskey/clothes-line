@@ -30,6 +30,20 @@ a, .btn-link {
     color: red;
 }
 
+.estimate-list li {
+    list-style-type: none;
+}
+
+    .estimate-list li span {
+        position: relative;
+        left: 1em;
+    }
+
+    .estimate-list li:before {
+        font-family: Icons;
+        content: '\e0a5';
+    }
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

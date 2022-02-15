@@ -6,45 +6,53 @@
 @inject NavigationManager navManager
 @implements IAsyncDisposable
 
-<h1>Planning Session</h1>
+<div class="container-fluid">
+    <h1>Planning Session</h1>
 
-<p>This is session @Id</p>
+    <p>This is session @Id</p>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <EditForm Model="this">
+                    <InputRadioGroup @bind-Value="estimate">
+                        @foreach (var option in options)
+                        {
+                            <InputRadio Value="@option.Key" id="@option.Key" class="btn-check d-none" />
 
-<div class="form-group">
-    <EditForm Model="this">
-        <InputRadioGroup @bind-Value="estimate">
-            @foreach (var option in options)
-            {
-                <InputRadio Value="@option.Key" id="@option.Key" class="btn-check d-none" />
+                            if (option.Key == estimate)
+                            {
+                                <label for="@option.Key" class="btn btn-secondary mr-2">@option.Value</label>
+                            }
+                            else
+                            {
+                                <label for="@option.Key" class="btn btn-outline-secondary mr-2">@option.Value</label>
+                            }
+                        }
+                    </InputRadioGroup>
+                </EditForm>
+            </div>
+            <button @onclick="SendEstimate" class="btn btn-primary mr-2" disabled="@(!IsConnected && estimate >= 0)">Send</button>
+            <button @onclick="ClearEstimates" class="btn btn-outline-danger" disabled="@(!IsConnected)">Clear Estimates</button>
+        </div>
 
-                if (option.Key == estimate)
+        <div class="col-md-6">
+            <h2>Estimates</h2>
+            <ul class="estimate-list">
+                @foreach (var connection in connections.OrderBy(x => x.Value))
                 {
-                    <label for="@option.Key" class="btn btn-primary mr-2">@option.Value</label>
+                    if (estimates.TryGetValue(connection.Key, out var estimate))
+                    {
+                        <li><span>@connection.Value (@options[estimate])</span></li>
+                    }
+                    else
+                    {
+                        <li><span>@connection.Value</span></li>
+                    }
                 }
-                else
-                {
-                    <label for="@option.Key" class="btn btn-outline-primary mr-2">@option.Value</label>
-                }
-            }
-        </InputRadioGroup>
-    </EditForm>
+            </ul>
+        </div>
+    </div>
 </div>
-<button @onclick="SendEstimate" disabled="@(!IsConnected && estimate >= 0)">Send</button>
-<button @onclick="ClearEstimates">Clear Estimates</button>
-
-<ul>
-    @foreach (var connection in connections)
-    {
-        if (estimates.TryGetValue(connection.Key, out var estimate))
-        {
-            <li>@connection.Value (@options[estimate])</li>
-        }
-        else
-        {
-            <li>@connection.Value</li>
-        }
-    }
-</ul>
 
 @code {
     private HubConnection? hubConnection;
