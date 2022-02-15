@@ -31,7 +31,7 @@
                     </InputRadioGroup>
                 </EditForm>
             </div>
-            <button @onclick="SendEstimate" class="btn btn-primary mr-2" disabled="@(!IsConnected && estimate >= 0)">Send</button>
+            <button @onclick="SendEstimate" class="btn btn-primary mr-2" disabled="@(!IsConnected || estimate < 0)">Send</button>
             <button @onclick="ClearEstimates" class="btn btn-outline-danger" disabled="@(!IsConnected)">Clear Estimates</button>
         </div>
 
