@@ -6,25 +6,19 @@
 
 <p>Enter a join code below to join your session.</p>
 
-<EditForm class="col-md-6" EditContext="@context" OnSubmit="@HandleJoin">
-    <p>Name <InputText class="form-control" @bind-Value="name" /></p>
-    <p>Session code <InputText class="form-control" @bind-Value="joinCode" /></p>
+<EditForm class="col-md-6" Model="@model" OnValidSubmit="@HandleJoin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>Name <InputText class="form-control" @bind-Value="model.Name" /></p>
+    <p>Session ID <InputText class="form-control" @bind-Value="model.SessionId" /></p>
     <button class="btn btn-primary" type="submit">Join</button>
 </EditForm>
 
 @code {
-    private EditContext? context;
-    private string joinCode = string.Empty;
-    private string name = string.Empty;
-
-    protected override async Task OnInitializedAsync()
-    {
-        context = new EditContext((joinCode, name));
-        await base.OnInitializedAsync();
-    }
+    private JoinSessionModel model = new();
 
     private void HandleJoin()
     {
-        navManager.NavigateTo($"session/{joinCode}/{name}");
+        navManager.NavigateTo($"session/{model.SessionId}/{model.Name}");
     }
 }
