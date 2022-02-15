@@ -5,16 +5,18 @@
 
 <p>This will be a planning session</p>
 
-<EditForm class="col-md-6" Model="this" OnSubmit="@CreateSession">
-    <p>Name <InputText class="form-control" @bind-Value="name" /></p>
+<EditForm class="col-md-6" Model="@model" OnValidSubmit="@CreateSession">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>Name <InputText class="form-control" @bind-Value="model.Name" /></p>
     <button class="btn btn-primary" type="submit">Create Session</button>
 </EditForm>
 
 @code {
-    private string name = string.Empty;
+    private NewSessionModel model = new();
 
     private void CreateSession()
     {
-        navManager.NavigateTo($"session/{Guid.NewGuid().ToString().Substring(0, 6)}/{name}");
+        navManager.NavigateTo($"session/{Guid.NewGuid().ToString().Substring(0, 6)}/{model.Name}");
     }
 }
