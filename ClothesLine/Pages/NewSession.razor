@@ -5,9 +5,9 @@
 
 <p>This will be a planning session</p>
 
-<EditForm Model="this" OnSubmit="@CreateSession">
-    <p>Name <InputText @bind-Value="name" /></p>
-    <button type="submit">Create Session</button>
+<EditForm class="col-md-6" Model="this" OnSubmit="@CreateSession">
+    <p>Name <InputText class="form-control" @bind-Value="name" /></p>
+    <button class="btn btn-primary" type="submit">Create Session</button>
 </EditForm>
 
 @code {
