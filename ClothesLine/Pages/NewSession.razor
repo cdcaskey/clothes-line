@@ -5,7 +5,7 @@
 
 <p>This will be a planning session</p>
 
-<EditForm Model="@name" OnSubmit="@CreateSession">
+<EditForm Model="this" OnSubmit="@CreateSession">
     <p>Name <InputText @bind-Value="name" /></p>
     <button type="submit">Create Session</button>
 </EditForm>
