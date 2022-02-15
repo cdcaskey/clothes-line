@@ -6,10 +6,10 @@
 
 <p>Enter a join code below to join your session.</p>
 
-<EditForm EditContext="@context" OnSubmit="@HandleJoin">
-    <p>Name <InputText @bind-Value="name" /></p>
-    <p>Session code <InputText @bind-Value="joinCode" /></p>
-    <button type="submit">Join</button>
+<EditForm class="col-md-6" EditContext="@context" OnSubmit="@HandleJoin">
+    <p>Name <InputText class="form-control" @bind-Value="name" /></p>
+    <p>Session code <InputText class="form-control" @bind-Value="joinCode" /></p>
+    <button class="btn btn-primary" type="submit">Join</button>
 </EditForm>
 
 @code {
