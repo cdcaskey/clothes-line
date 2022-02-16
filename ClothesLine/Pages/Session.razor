@@ -1,6 +1,7 @@
 ﻿@page "/session/{Id}/{Name}"
 @using System.Text.Json
 @using ClothesLine.Hubs
+@using ClothesLine.Pages.Components
 @using Microsoft.AspNetCore.SignalR.Client
 @using Methods = ClothesLine.Hubs.SignalRMethods.Session
 @inject NavigationManager navManager
@@ -9,7 +10,7 @@
 <div class="container-fluid">
     <h1>Planning Session</h1>
 
-    <p>This is session @Id</p>
+    <p>This is session <CopyOrShare DisplayText="@Id" ShareTitle="Join Clothes Line Session" ShareText="Click this link to join my Clothes Line session" Url="@($"{navManager.BaseUri}joinsession/{Id}")" /></p>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">

@@ -1,0 +1,72 @@
+﻿@inject IJSRuntime JSRuntime
+
+<div class="d-inline-flex align-items-center w-auto input-group">
+    <input class="form-control" readonly type="text" value="@DisplayText" />
+    <div class="input-group-append">
+        <button type="button" class="btn btn-primary" @onclick="CopyTextToClipboard" @onmouseout="ResetButtonText">@buttonText</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string DisplayText { get; set; }
+
+    [Parameter]
+    public string ShareTitle { get; set; }
+
+    [Parameter]
+    public string? ShareText { get; set; }
+
+    [Parameter]
+    public string Url { get; set; }
+
+    private string buttonText;
+    private bool? showCopy;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        buttonText = await ShowCopy() ? "Copy Link" : "Share Link";
+
+        if (firstRender)
+        {
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task CopyTextToClipboard()
+    {
+        if (await ShowCopy())
+        {
+            await JSRuntime.InvokeVoidAsync("copyText", Url);
+            buttonText = "Copied";
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("shareLink", ShareTitle, ShareText, Url);
+        }
+    }
+
+    private async Task<bool> ShowCopy()
+    {
+        if (!showCopy.HasValue)
+        {
+            showCopy = await JSRuntime.InvokeAsync<bool>("showCopy");
+        }
+
+        return showCopy.Value;
+    }
+
+    private async Task ResetButtonText()
+    {
+        if (await ShowCopy())
+        {
+            buttonText = "Copy Link";
+        }
+        else
+        {
+            buttonText = "Share Link";
+        }
+    }
+}

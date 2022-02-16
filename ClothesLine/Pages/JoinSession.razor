@@ -1,4 +1,5 @@
 ﻿@page "/joinsession"
+@page "/joinsession/{Id}"
 
 @inject NavigationManager navManager;
 
@@ -15,6 +16,9 @@
 </EditForm>
 
 @code {
+    [Parameter]
+    public string Id { get => model.SessionId; set => model.SessionId = value; }
+
     private JoinSessionModel model = new();
 
     private void HandleJoin()
