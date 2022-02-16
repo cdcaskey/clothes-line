@@ -51,7 +51,12 @@ namespace ClothesLine.Hubs
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             connections.Remove(Context.ConnectionId, out var connection);
-            await UpdateGroup(connection.Session);
+
+            if (connection is not null)
+            {
+                await UpdateGroup(connection.Session);
+            }
+
             await base.OnDisconnectedAsync(exception);
         }
 
