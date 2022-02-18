@@ -33,7 +33,7 @@
                 </EditForm>
             </div>
             <button @onclick="SendEstimate" class="btn btn-primary mr-2" disabled="@(!IsConnected || estimate < 0)">Send</button>
-            <button @onclick="ShowEstimates" class="@($"btn {(showEstimates ? "btn-success" : "btn-outline-success")}")" disabled="@(!IsConnected)">Show Estimates</button>
+            <button @onclick="ShowEstimates" class="@($"btn {(showEstimates ? "btn-success" : "btn-outline-success")}")" disabled="@(!IsConnected || !estimates.Any())">Show Estimates</button>
             <button @onclick="ClearEstimates" class="btn btn-outline-danger" disabled="@(!IsConnected)">Clear Estimates</button>
         </div>
 
@@ -46,30 +46,32 @@
                     {
                         if (showEstimates)
                         {
-                            <li><span>@connection.Value (@options[estimate])</span></li>
+                            <li class="estimate"><span>@connection.Value (@options[estimate])</span></li>
                         }
                         else
                         {
-                            <li><span>@connection.Value</span><span class="ml-2 oi oi-check" style="color: #28a745" /></li>
+                            <li class="estimate"><span>@connection.Value</span><span class="ml-2 oi oi-check" style="color: #28a745" /></li>
                         }
                     }
                     else
                     {
-                        <li><span>@connection.Value</span></li>
+                        <li class="estimate"><span>@connection.Value</span></li>
                     }
                 }
             </ul>
+            
+            @if (showEstimates)
+            {
+                <h5>Average: @CalculateAverage()</h5>
+                <h5>Outliers: @CalculateOutliers() <span style="font-size:0.75em">(out of @estimates.Count)</span></h5>
+                <h5>Variance: @CalculateVariance()</h5>
+            }
         </div>
     </div>
 </div>
 
 @code {
-    private HubConnection? hubConnection;
-    private int estimate = -1;
-    private bool showEstimates = false;
-    private Dictionary<string, string> connections = new Dictionary<string, string>();
-    private Dictionary<string, int> estimates = new Dictionary<string, int>();
-    private Dictionary<int, string> options = new Dictionary<int, string>
+    private readonly Dictionary<int, string> options = new Dictionary<int, string>
     {
         { 0, "0" },
         { 1, "XS" },
@@ -81,6 +83,12 @@
         { 20, "Too Big" },
         { 100, "?" },
     };
+
+    private HubConnection? hubConnection;
+    private int estimate = -1;
+    private bool showEstimates = false;
+    private Dictionary<string, string> connections = new Dictionary<string, string>();
+    private Dictionary<string, int> estimates = new Dictionary<string, int>();
 
     [Parameter]
     public string Id { get; set; }
@@ -188,5 +196,70 @@
         {
             await hubConnection.DisposeAsync();
         }
+    }
+
+    private (int SizeDown, int SizeUp)? CalculateSurroundingSizes()
+    {
+        if (!estimates.Any())
+        {
+            return null;
+        }
+
+        var average = estimates.Sum(e => e.Value) / (double)estimates.Count;
+        var sizeDown = options.Keys.Where(o => o <= average).Max();
+        var sizeUp = options.Keys.Where(o => o >= average).Min();
+
+        return (sizeDown, sizeUp);
+    }
+
+    private string CalculateAverage()
+    {
+        var surroundingSizes = CalculateSurroundingSizes();
+
+        if (surroundingSizes is null)
+        {
+            return "N/A";
+        }
+
+        if (surroundingSizes.Value.SizeDown == surroundingSizes.Value.SizeUp)
+        {
+            return options[surroundingSizes.Value.SizeDown];
+        }
+
+        return $"{options[surroundingSizes.Value.SizeDown]} - {options[surroundingSizes.Value.SizeUp]}";
+    }
+
+    private string CalculateOutliers()
+    {
+        var surroundingSizes = CalculateSurroundingSizes();
+
+        if (surroundingSizes is null)
+        {
+            return "N/A";
+        }
+
+        var outliers = estimates.Count(e => e.Value < surroundingSizes.Value.SizeDown || e.Value > surroundingSizes.Value.SizeUp);
+
+        if (outliers == 0)
+        {
+            return "None";
+        }
+
+        return outliers.ToString();
+    }
+
+    private string CalculateVariance()
+    {
+        if (!estimates.Any())
+        {
+            return "N/A";
+        }
+
+        if (estimates.Values.Min() == estimates.Values.Max())
+        {
+            return options[estimates.Values.First()];
+        }
+
+        return $"{options[estimates.Values.Min()]} - {options[estimates.Values.Max()]}";
     }
 }
