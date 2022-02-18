@@ -52,7 +52,14 @@
     {
         if (!showCopy.HasValue)
         {
-            showCopy = await JSRuntime.InvokeAsync<bool>("showCopy");
+            try
+            {
+                showCopy = await JSRuntime.InvokeAsync<bool>("showCopy");
+            }
+            catch
+            {
+                showCopy = true;
+            }
         }
 
         return showCopy.Value;
