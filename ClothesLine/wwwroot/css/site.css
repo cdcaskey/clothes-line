@@ -34,12 +34,12 @@ a, .btn-link {
     list-style-type: none;
 }
 
-    .estimate-list li span {
+    .estimate-list li.estimate span {
         position: relative;
         left: 1em;
     }
 
-    .estimate-list li:before {
+    .estimate-list li.estimate:before {
         font-family: Icons;
         content: '\e0a5';
     }

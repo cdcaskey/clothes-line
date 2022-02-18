@@ -37,6 +37,11 @@ namespace ClothesLine.Hubs
             await Clients.Group(sessionId).SendAsync(Methods.ReceiveEstimate, Context.ConnectionId, estimate);
         }
 
+        public async Task ShowEstimates(string sessionId)
+        {
+            await Clients.Group(sessionId).SendAsync(Methods.ShowEstimates);
+        }
+
         public async Task ClearEstimates(string sessionId)
         {
             connections.ClearEstimates(sessionId);
