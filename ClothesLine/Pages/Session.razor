@@ -20,13 +20,15 @@
                         {
                             <InputRadio Value="@option.Key" id="@option.Key" class="btn-check d-none" />
 
+                            string displayText = showNumbers && option.Key != 0 && option.Key != 100 ? $"{option.Value} ({option.Key})" : option.Value;
+
                             if (option.Key == estimate)
                             {
-                                <label for="@option.Key" class="btn btn-secondary mr-2">@option.Value</label>
+                                <label for="@option.Key" class="btn btn-secondary mr-2">@displayText</label>
                             }
                             else
                             {
-                                <label for="@option.Key" class="btn btn-outline-secondary mr-2">@option.Value</label>
+                                <label for="@option.Key" class="btn btn-outline-secondary mr-2">@displayText</label>
                             }
                         }
                     </InputRadioGroup>
@@ -65,6 +67,10 @@
                 <h5>Average: @CalculateAverage()</h5>
                 <h5>Outliers: @CalculateOutliers() <span style="font-size:0.75em">(out of @estimates.Count)</span></h5>
                 <h5>Variance: @CalculateVariance()</h5>
+                    <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="ShowNumbers" @bind="ShowNumbers">
+                    <label class="custom-control-label" for="ShowNumbers">Show Numbers</label>
+                </div>
             }
         </div>
     </div>
@@ -87,6 +93,7 @@
     private HubConnection? hubConnection;
     private int estimate = -1;
     private bool showEstimates = false;
+    private bool showNumbers = false;
     private Dictionary<string, string> connections = new Dictionary<string, string>();
     private Dictionary<string, int> estimates = new Dictionary<string, int>();
 
@@ -95,6 +102,16 @@
 
     [Parameter]
     public string Name { get; set; }
+
+    private bool ShowNumbers
+    {
+        get => showNumbers;
+        set
+        {
+            showNumbers = value;
+            StateHasChanged();
+        }
+    }
 
     public bool IsConnected =>
         hubConnection?.State == HubConnectionState.Connected;
@@ -222,12 +239,29 @@
             return "N/A";
         }
 
+        var returnString = string.Empty;
         if (surroundingSizes.Value.SizeDown == surroundingSizes.Value.SizeUp)
         {
-            return options[surroundingSizes.Value.SizeDown];
+            returnString = options[surroundingSizes.Value.SizeDown];
+
+            if (showNumbers)
+            {
+                returnString += $" ({surroundingSizes.Value.SizeDown})";
+            }
+        }
+        else
+        {
+            returnString = $"{options[surroundingSizes.Value.SizeDown]} - {options[surroundingSizes.Value.SizeUp]}";
+
+            if (showNumbers)
+            {
+                returnString += $" ({surroundingSizes.Value.SizeDown} - {surroundingSizes.Value.SizeUp})";
+            }
+
+            return returnString;
         }
 
-        return $"{options[surroundingSizes.Value.SizeDown]} - {options[surroundingSizes.Value.SizeUp]}";
+        return returnString;
     }
 
     private string CalculateOutliers()
