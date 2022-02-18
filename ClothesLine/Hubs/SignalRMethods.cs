@@ -12,6 +12,7 @@
 
             public const string SendEstimate = "SendEstimate";
             public const string ReceiveEstimate = "ReceiveEstimate";
+            public const string ShowEstimates = "ShowEstimates";
             public const string ClearEstimates = "ClearEstimates";
         }
     }
