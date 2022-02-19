@@ -2,9 +2,13 @@
 
 <div class="d-inline-flex align-items-center w-auto input-group">
     <input class="form-control" readonly type="text" value="@DisplayText" />
-    <div class="input-group-append">
-        <button type="button" class="btn btn-primary" @onclick="CopyTextToClipboard" @onmouseout="ResetButtonText">@buttonText</button>
-    </div>
+    
+    @if (!string.IsNullOrEmpty(buttonText))
+    {
+        <div class="input-group-append">
+            <button type="button" class="btn btn-primary" @onclick="CopyTextToClipboard" @onmouseout="ResetButtonText">@buttonText</button>
+        </div>
+    }
 </div>
 
 @code {
@@ -20,15 +24,14 @@
     [Parameter]
     public string Url { get; set; }
 
+    private ButtonAction? buttonAction;
     private string buttonText;
-    private bool? showCopy;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        buttonText = await ShowCopy() ? "Copy Link" : "Share Link";
-
         if (firstRender)
         {
+            await ResetButtonText();
             StateHasChanged();
         }
 
@@ -37,10 +40,11 @@
 
     private async Task CopyTextToClipboard()
     {
-        if (await ShowCopy())
+        if (await GetButtonAction() == ButtonAction.Copy)
         {
             await JSRuntime.InvokeVoidAsync("copyText", Url);
             buttonText = "Copied";
+            StateHasChanged();
         }
         else
         {
@@ -48,32 +52,49 @@
         }
     }
 
-    private async Task<bool> ShowCopy()
+    private async Task<ButtonAction> GetButtonAction()
     {
-        if (!showCopy.HasValue)
+        if (buttonAction.HasValue)
         {
-            try
-            {
-                showCopy = await JSRuntime.InvokeAsync<bool>("showCopy");
-            }
-            catch
-            {
-                showCopy = true;
-            }
+            return buttonAction.Value;
         }
 
-        return showCopy.Value;
+        try
+        {
+            var showCopy = await JSRuntime.InvokeAsync<bool>("showCopy");
+
+            buttonAction = showCopy ? ButtonAction.Copy : ButtonAction.Share;
+        }
+        catch
+        {
+            buttonAction = ButtonAction.None;
+        }
+
+        return buttonAction.Value;
     }
 
     private async Task ResetButtonText()
+    { 
+        switch (await GetButtonAction())
+        {
+            case ButtonAction.Copy:
+                buttonText = "Copy Text";
+                return;
+
+            case ButtonAction.Share:
+                buttonText = "Share Text";
+                return;
+
+            default:
+                buttonText = string.Empty;
+                return;
+        }
+    }
+
+    private enum ButtonAction
     {
-        if (await ShowCopy())
-        {
-            buttonText = "Copy Link";
-        }
-        else
-        {
-            buttonText = "Share Link";
-        }
+        None,
+        Copy,
+        Share
     }
 }
