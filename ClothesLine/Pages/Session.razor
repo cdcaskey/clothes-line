@@ -20,7 +20,7 @@
                         {
                             <InputRadio Value="@option.Key" id="@option.Key" class="btn-check d-none" />
 
-                            string displayText = showNumbers && option.Key != 0 && option.Key != 100 ? $"{option.Value} ({option.Key})" : option.Value;
+                            string displayText = showNumbers && showEstimates && option.Key != 0 && option.Key != 100 ? $"{option.Value} ({option.Key})" : option.Value;
 
                             if (option.Key == estimate)
                             {
@@ -34,7 +34,7 @@
                     </InputRadioGroup>
                 </EditForm>
             </div>
-            <button @onclick="SendEstimate" class="btn btn-primary mr-2" disabled="@(!IsConnected || estimate < 0)">Send</button>
+            <button @onclick="SendEstimate" class="btn btn-primary" disabled="@(!IsConnected || estimate < 0)">Send</button>
             <button @onclick="ShowEstimates" class="@($"btn {(showEstimates ? "btn-success" : "btn-outline-success")}")" disabled="@(!IsConnected || !estimates.Any())">Show Estimates</button>
             <button @onclick="ClearEstimates" class="btn btn-outline-danger" disabled="@(!IsConnected)">Clear Estimates</button>
         </div>
@@ -292,7 +292,7 @@
 
         if (estimates.Values.Min() == estimates.Values.Max())
         {
-            return options[estimates.Values.First()];
+            return "None";
         }
 
         return $"{options[estimates.Values.Min()]} - {options[estimates.Values.Max()]}";
