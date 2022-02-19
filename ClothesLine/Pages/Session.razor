@@ -24,19 +24,19 @@
 
                             if (option.Key == estimate)
                             {
-                                <label for="@option.Key" class="btn btn-secondary mr-2">@displayText</label>
+                                <label for="@option.Key" class="btn btn-secondary estimate-option mx-1">@displayText</label>
                             }
                             else
                             {
-                                <label for="@option.Key" class="btn btn-outline-secondary mr-2">@displayText</label>
+                                <label for="@option.Key" class="btn btn-outline-secondary estimate-option mx-1">@displayText</label>
                             }
                         }
                     </InputRadioGroup>
                 </EditForm>
             </div>
-            <button @onclick="SendEstimate" class="btn btn-primary" disabled="@(!IsConnected || estimate < 0)">Send</button>
-            <button @onclick="ShowEstimates" class="@($"btn {(showEstimates ? "btn-success" : "btn-outline-success")}")" disabled="@(!IsConnected || !estimates.Any())">Show Estimates</button>
-            <button @onclick="ClearEstimates" class="btn btn-outline-danger" disabled="@(!IsConnected)">Clear Estimates</button>
+            <button @onclick="SendEstimate" class="btn btn-primary small-screen-full-width my-1" disabled="@(!IsConnected || estimate < 0)">Send</button>
+            <button @onclick="ShowEstimates" class="@($"btn small-screen-full-width my-1 {(showEstimates ? "btn-success" : "btn-outline-success")}")" disabled="@(!IsConnected || !estimates.Any())">Show Estimates</button>
+            <button @onclick="ClearEstimates" class="btn btn-outline-danger small-screen-full-width my-1" disabled="@(!IsConnected)">Clear Estimates</button>
         </div>
 
         <div class="col-md-6">
