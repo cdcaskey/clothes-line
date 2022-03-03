@@ -48,7 +48,7 @@
                     {
                         if (showEstimates)
                         {
-                            <li class="estimate"><span>@connection.Value (@options[estimate])</span></li>
+                            <li class="@(IsOutlier(estimate) ? "estimate outlier" : "estimate ")"><span>@connection.Value (@options[estimate])</span></li>
                         }
                         else
                         {
@@ -57,7 +57,7 @@
                     }
                     else
                     {
-                        <li class="estimate"><span>@connection.Value</span></li>
+                        <li class="@(showEstimates ? "missing-estimate" : "estimate")"><span>@connection.Value</span></li>
                     }
                 }
             </ul>
@@ -281,6 +281,18 @@
         }
 
         return outliers.ToString();
+    }
+
+    private bool IsOutlier(int score)
+    {
+        var surroundingSizes = CalculateSurroundingSizes();
+
+        if (surroundingSizes is null)
+        {
+            return false;
+        }
+
+        return score < surroundingSizes.Value.SizeDown || score > surroundingSizes.Value.SizeUp;
     }
 
     private string CalculateVariance()
