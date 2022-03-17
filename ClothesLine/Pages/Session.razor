@@ -33,8 +33,8 @@
                         }
                     </InputRadioGroup>
                 </EditForm>
-            </div>
-            <button @onclick="SendEstimate" class="btn btn-primary small-screen-full-width my-1" disabled="@(!IsConnected || estimate < 0)">Send</button>
+            </div>    
+               <button @onclick="SendEstimate" class="btn btn-primary small-screen-full-width my-1" disabled="@(!IsConnected || estimate < 0)">Send</button>
             <button @onclick="ShowEstimates" class="@($"btn small-screen-full-width my-1 {(showEstimates ? "btn-success" : "btn-outline-success")}")" disabled="@(!IsConnected || !estimates.Any())">Show Estimates</button>
             <button @onclick="ClearEstimates" class="btn btn-outline-danger small-screen-full-width my-1" disabled="@(!IsConnected)">Clear Estimates</button>
         </div>
@@ -52,7 +52,7 @@
                         }
                         else
                         {
-                            <li class="estimate"><span>@connection.Value</span><span class="ml-2 oi oi-check" style="color: #28a745" /></li>
+                            <li class="estimate"><span>@connection.Value</span><span class="ms-2 oi oi-check" style="color: #28a745" /></li>
                         }
                     }
                     else
@@ -67,9 +67,9 @@
                 <h5>Average: @CalculateAverage()</h5>
                 <h5>Outliers: @CalculateOutliers() <span style="font-size:0.75em">(out of @estimates.Count)</span></h5>
                 <h5>Variance: @CalculateVariance()</h5>
-                    <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="ShowNumbers" @bind="ShowNumbers">
-                    <label class="custom-control-label" for="ShowNumbers">Show Numbers</label>
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input" id="ShowNumbers" @bind="ShowNumbers">
+                    <label class="form-check-label" for="ShowNumbers">Show Numbers</label>
                 </div>
             }
         </div>

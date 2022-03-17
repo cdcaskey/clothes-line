@@ -84,3 +84,7 @@ a, .btn-link {
     right: 0.75rem;
     top: 0.5rem;
 }
+
+.form-group {
+    margin-bottom: 1rem;
+}
