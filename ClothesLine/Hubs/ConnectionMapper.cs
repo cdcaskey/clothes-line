@@ -8,13 +8,18 @@ namespace ClothesLine.Hubs
     {
         private readonly ConcurrentDictionary<string, ConnectedClient> connections = new ConcurrentDictionary<string, ConnectedClient>();
 
-        public void Add(string connectionId, string session, string name)
+        public void Add(string connectionId, string session, string name, bool spectating)
         {
             var connection = connections.GetOrAdd(connectionId, key => new ConnectedClient());
 
             connection.Id = connectionId;
             connection.Session = session;
             connection.Name = name;
+
+            if (spectating)
+            {
+                connection.Spectating = spectating;
+            }
         }
 
         public IEnumerable<ConnectedClient> GetBySession(string sessionId) =>
@@ -25,6 +30,14 @@ namespace ClothesLine.Hubs
             if (connections.TryGetValue(connectionId, out var client))
             {
                 client.Estimate = estimate;
+            }
+        }
+
+        public void SetSpectating(string connectionId, bool spectating)
+        {
+            if (connections.TryGetValue(connectionId, out var client))
+            {
+                client.Spectating = spectating;
             }
         }
 
