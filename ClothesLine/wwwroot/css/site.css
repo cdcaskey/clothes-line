@@ -50,7 +50,9 @@ a, .btn-link {
         color: darkorange;
     }
 
-.estimate-list li.estimate span, .estimate-list li.missing-estimate span {
+.estimate-list li.estimate span,
+.estimate-list li.missing-estimate span,
+.estimate-list li.spectating span{
     position: relative;
     left: 1em;
 }
@@ -64,6 +66,11 @@ a, .btn-link {
     font-family: Icons;
     content: '\e0a5';
     color: red;
+}
+
+.estimate-list li.spectating:before {
+    font-family: Icons;
+    content:'\e08f';
 }
 
 #blazor-error-ui {

@@ -7,12 +7,15 @@
 
 <p>Enter a join code below to join your session.</p>
 
-<EditForm class="col-md-6" Model="@model" OnValidSubmit="@HandleJoin">
+<EditForm class="col-md-6" Model="@model">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <p>Name <InputText class="form-control" @bind-Value="model.Name" /></p>
     <p>Session ID <InputText class="form-control" @bind-Value="model.SessionId" /></p>
-    <button class="btn btn-primary" type="submit">Join</button>
+    <div class="btn-group" role="group">
+        <button class="btn btn-primary" type="submit" @onclick="Join">Join</button>
+        <button class="btn btn-outline-primary" type="submit" @onclick="Spectate">Join as Spectator</button>
+    </div>
 </EditForm>
 
 @code {
@@ -21,8 +24,7 @@
 
     private JoinSessionModel model = new();
 
-    private void HandleJoin()
-    {
-        navManager.NavigateTo($"session/{model.SessionId}/{model.Name}");
-    }
+    private void Join() => navManager.NavigateTo($"session/{model.SessionId}/{model.Name}");
+
+    private void Spectate() => navManager.NavigateTo($"session/{model.SessionId}/{model.Name}/true");
 }

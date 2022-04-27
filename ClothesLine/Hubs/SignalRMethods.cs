@@ -6,6 +6,8 @@
         {
             public const string JoinSession = "JoinSession";
 
+            public const string SetSpectating = "SetSpectating";
+
             public const string NotifyUpdatedClients = "NotifyUpdatedClients";
 
             public const string RequestData = "RequestData";

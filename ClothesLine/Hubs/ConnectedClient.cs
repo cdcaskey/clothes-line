@@ -8,6 +8,8 @@
 
         public string Name { get; set; }
 
+        public bool Spectating { get; set; }
+
         public int? Estimate { get; set; }
     }
 }
