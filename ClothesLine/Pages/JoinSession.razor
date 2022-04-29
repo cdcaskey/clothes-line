@@ -7,14 +7,14 @@
 
 <p>Enter a join code below to join your session.</p>
 
-<EditForm class="col-md-6" Model="@model">
+<EditForm class="col-md-6" Model="@model" OnValidSubmit="@Join">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <p>Name <InputText class="form-control" @bind-Value="model.Name" /></p>
     <p>Session ID <InputText class="form-control" @bind-Value="model.SessionId" /></p>
     <div class="btn-group" role="group">
-        <button class="btn btn-primary" type="submit" @onclick="Join">Join</button>
-        <button class="btn btn-outline-primary" type="submit" @onclick="Spectate">Join as Spectator</button>
+        <button class="btn btn-primary" type="submit" @onclick="() => model.Spectating = false">Join</button>
+        <button class="btn btn-outline-primary" type="submit" @onclick="() => model.Spectating = true">Join as Spectator</button>
     </div>
 </EditForm>
 
@@ -24,7 +24,15 @@
 
     private JoinSessionModel model = new();
 
-    private void Join() => navManager.NavigateTo($"session/{model.SessionId}/{model.Name}");
-
-    private void Spectate() => navManager.NavigateTo($"session/{model.SessionId}/{model.Name}/true");
+    private void Join()
+    {
+        if (model.Spectating)
+        {
+            navManager.NavigateTo($"session/{model.SessionId}/{model.Name}/true");
+        }
+        else
+        {
+            navManager.NavigateTo($"session/{model.SessionId}/{model.Name}");
+        }
+    }
 }

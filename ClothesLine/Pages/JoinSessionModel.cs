@@ -10,5 +10,7 @@ namespace ClothesLine.Pages
 
         [Required]
         public string Name { get; set; }
+
+        public bool Spectating { get; set; }
     }
 }
