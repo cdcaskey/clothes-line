@@ -1,10 +1,10 @@
-﻿@page "/session/{Id}/{Name}"
-@page "/session/{Id}/{Name}/{Spectating:bool}"
+﻿@page "/session/{Id}/{Name}/{Spectating:bool?}"
 @using System.Text.Json
 @using ClothesLine.Hubs
 @using ClothesLine.Pages.Components
 @using Microsoft.AspNetCore.SignalR.Client
 @using Methods = ClothesLine.Hubs.SignalRMethods.Session
+@using Microsoft.AspNetCore.WebUtilities
 @inject NavigationManager navManager
 @implements IAsyncDisposable
 
@@ -175,14 +175,14 @@
     private readonly Dictionary<int, string> options = new Dictionary<int, string>
     {
         { 0, "0" },
-        { 1, "XS" },
-        { 2, "S" },
-        { 3, "M" },
-        { 5, "L" },
-        { 8, "XL" },
-        { 13, "XXL" },
-        { 20, "Too Big" },
-        { 100, "?" },
+        { 1, "1" },
+        { 2, "2" },
+        { 3, "3" },
+        { 5, "4" },
+        { 8, "5" },
+        { 13, "6" },
+        { 20, "7" },
+        { 100, "8" },
     };
 
     private HubConnection? hubConnection;
@@ -192,6 +192,8 @@
     private Dictionary<string, ConnectedClient> connections = new Dictionary<string, ConnectedClient>();
     private Dictionary<string, int> estimates = new Dictionary<string, int>();
     private bool sendEstimateAutomatically;
+    private bool styleSet = false;
+    private EstimationStyle? style;
 
     [Parameter]
     public string Id { get; set; }
@@ -201,6 +203,16 @@
 
     [Parameter]
     public bool Spectating { get; set; }
+
+    private EstimationStyle? Style
+    {
+        get => style;
+        set
+        {
+            style = value;
+            LoadStyle();
+        }
+    }
 
     public bool SendEstimateAutomatically
     {
@@ -246,6 +258,15 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var uri = navManager.ToAbsoluteUri(navManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("style", out var styleParam))
+        {
+            if (Enum.TryParse<EstimationStyle>(styleParam, out var newStyle))
+            {
+                Style = newStyle;
+            }
+        }
+
         hubConnection = new HubConnectionBuilder()
             .WithUrl(navManager.ToAbsoluteUri("/sessionhub"))
             .Build();
@@ -253,13 +274,18 @@
         SetupHubMethods();
 
         await hubConnection.StartAsync();
-        await hubConnection.SendAsync(Methods.JoinSession, Id, Name, Spectating);
+        await hubConnection.SendAsync(Methods.JoinSession, Id, Name, Spectating, Style);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            if (Style != null)
+            {
+                LoadStyle();
+            }
+
             await hubConnection.SendAsync(Methods.RequestData, Id);
         }
 
@@ -287,6 +313,15 @@
                 }
             }
 
+            if (!Style.HasValue)
+            {
+                var style = connectedClients.FirstOrDefault(c => c.Style.HasValue);
+                if (style != null)
+                {
+                    Style = style!.Style;
+                }
+            }
+
             StateHasChanged();
         });
 
@@ -309,6 +344,21 @@
             showEstimates = false;
             StateHasChanged();
         });
+    }
+
+    private void LoadStyle()
+    {
+        if (Style == null || styleSet)
+        {
+            return;
+        }
+
+        foreach (var v in options)
+        {
+            options[v.Key] = EstimationValueMap.Values[int.Parse(v.Value), (int)Style];
+        }
+
+        styleSet = true;
     }
 
     private async Task Spectate() => await SetSpectating(true);

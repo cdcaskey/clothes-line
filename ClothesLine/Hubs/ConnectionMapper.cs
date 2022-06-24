@@ -8,13 +8,14 @@ namespace ClothesLine.Hubs
     {
         private readonly ConcurrentDictionary<string, ConnectedClient> connections = new ConcurrentDictionary<string, ConnectedClient>();
 
-        public void Add(string connectionId, string session, string name, bool spectating)
+        public void Add(string connectionId, string session, string name, bool spectating, EstimationStyle? style)
         {
             var connection = connections.GetOrAdd(connectionId, key => new ConnectedClient());
 
             connection.Id = connectionId;
             connection.Session = session;
             connection.Name = name;
+            connection.Style = style;
 
             if (spectating)
             {
