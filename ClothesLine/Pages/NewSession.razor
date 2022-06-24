@@ -9,7 +9,18 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
     <p>Name <InputText class="form-control" @bind-Value="model.Name" /></p>
-    <button class="btn btn-primary" type="submit">Create Session</button>
+
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <select class="form-control-lg no-right-radius" @bind="model.EstimationStyleId">
+                @foreach (var style in Enum.GetValues<EstimationStyle>())
+                {
+                    <option value="@((int)style)">@style.GetDescription()</option>
+                }
+            </select>
+        </div>
+        <button class="btn btn-lg btn-primary" type="submit">Create Session</button>
+    </div>
 </EditForm>
 
 @code {
@@ -17,6 +28,6 @@
 
     private void CreateSession()
     {
-        navManager.NavigateTo($"session/{Guid.NewGuid().ToString().Substring(0, 6)}/{model.Name}");
+        navManager.NavigateTo($"session/{Guid.NewGuid().ToString().Substring(0, 6)}/{model.Name}?Style={model.EstimationStyle}");
     }
 }

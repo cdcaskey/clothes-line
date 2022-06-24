@@ -16,14 +16,14 @@ namespace ClothesLine.Hubs
             this.connections = connections;
         }
 
-        public async Task JoinSession(string sessionId, string name, bool spectating)
+        public async Task JoinSession(string sessionId, string name, bool spectating, EstimationStyle? style)
         {
             if (name.Equals("andy", StringComparison.InvariantCultureIgnoreCase))
             {
                 name = "Candy";
             }
 
-            connections.Add(Context.ConnectionId, sessionId, name, spectating);
+            connections.Add(Context.ConnectionId, sessionId, name, spectating, style);
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
             
             await UpdateGroup(sessionId);
