@@ -3,9 +3,11 @@
 @using ClothesLine.Hubs
 @using ClothesLine.Pages.Components
 @using Microsoft.AspNetCore.SignalR.Client
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @using Methods = ClothesLine.Hubs.SignalRMethods.Session
 @using Microsoft.AspNetCore.WebUtilities
 @inject NavigationManager navManager
+@inject ProtectedLocalStorage BrowserStorage
 @implements IAsyncDisposable
 
 <div class="container-fluid">
@@ -41,7 +43,7 @@
                 <div class="button-toolbar" role="toolbar">
                     <div class="btn-group me-2" role="group">
                         <button @onclick="SendEstimate" class="btn btn-primary small-screen-full-width my-1" disabled="@(!IsConnected || SendEstimateAutomatically || Estimate < 0)">Send</button>
-                        <input id="sendAutomatically" type="checkbox" @onchange="() => SendEstimateAutomatically = !SendEstimateAutomatically" class="btn-check" />
+                        <input id="sendAutomatically" type="checkbox" class="btn-check" @bind="SendEstimateAutomatically" />
                         <label for="sendAutomatically" class="btn btn-outline-primary my-1">Send Automatically</label>
                     </div>
                     <div class="btn-group me-2" role="group">
@@ -219,8 +221,7 @@
         get => sendEstimateAutomatically;
         set
         {
-            sendEstimateAutomatically = value;
-            StateHasChanged();
+            ChangeSendEstimateAutomatically(value);
 
             if (value)
             {
@@ -284,6 +285,12 @@
             if (Style != null)
             {
                 LoadStyle();
+            }
+
+            var loadAutoSend = await BrowserStorage.GetAsync<bool>("autosend");
+            if (loadAutoSend.Success)
+            {
+                await ChangeSendEstimateAutomatically(loadAutoSend.Value);
             }
 
             await hubConnection.SendAsync(Methods.RequestData, Id);
@@ -501,5 +508,17 @@
         }
 
         return $"{options[estimates.Values.Min()]} - {options[estimates.Values.Max()]}";
+    }
+
+    private async Task ChangeSendEstimateAutomatically(bool newValue)
+    {
+        if (sendEstimateAutomatically == newValue)
+        {
+            return;
+        }
+
+        sendEstimateAutomatically = newValue;
+        await BrowserStorage.SetAsync("autosend", newValue);
+        StateHasChanged();
     }
 }
