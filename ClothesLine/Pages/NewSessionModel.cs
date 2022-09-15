@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace ClothesLine.Pages
 {
@@ -15,5 +16,7 @@ namespace ClothesLine.Pages
             get => (int)EstimationStyle;
             set => EstimationStyle = (EstimationStyle)value;
         }
+
+        public string UrlSafeName => HttpUtility.UrlEncode(this.Name);
     }
 }

@@ -28,11 +28,11 @@
     {
         if (model.Spectating)
         {
-            navManager.NavigateTo($"session/{model.SessionId}/{model.Name}/true");
+            navManager.NavigateTo($"session/{model.SessionId}/{model.UrlSafeName}/true");
         }
         else
         {
-            navManager.NavigateTo($"session/{model.SessionId}/{model.Name}");
+            navManager.NavigateTo($"session/{model.SessionId}/{model.UrlSafeName}");
         }
     }
 }

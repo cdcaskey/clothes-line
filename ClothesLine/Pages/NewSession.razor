@@ -28,6 +28,6 @@
 
     private void CreateSession()
     {
-        navManager.NavigateTo($"session/{Guid.NewGuid().ToString().Substring(0, 6)}/{model.Name}?Style={model.EstimationStyle}");
+        navManager.NavigateTo($"session/{Guid.NewGuid().ToString().Substring(0, 6)}/{model.UrlSafeName}?Style={model.EstimationStyle}");
     }
 }
