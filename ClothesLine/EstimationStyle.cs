@@ -9,6 +9,8 @@ namespace ClothesLine
         [Description("👕 T-Shirt")]
         TShirt,
         [Description("🍌 Fruit")]
-        Fruit
+        Fruit,
+        [Description("5️⃣ Five")]
+        Five,
     }
 }
