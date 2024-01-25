@@ -6,7 +6,7 @@ namespace ClothesLine.Hubs
 {
     public class ConnectionMapper
     {
-        private readonly ConcurrentDictionary<string, ConnectedClient> connections = new ConcurrentDictionary<string, ConnectedClient>();
+        private readonly ConcurrentDictionary<string, ConnectedClient> connections = new();
 
         public void Add(string connectionId, string session, string name, bool spectating, EstimationStyle? style)
         {
@@ -50,9 +50,15 @@ namespace ClothesLine.Hubs
             }
         }
 
-        public void Remove(string connectionId, out ConnectedClient removedConnection)
+        public void ToggleCandy(string connectionId)
         {
-            connections.TryRemove(connectionId, out removedConnection);
+            if (connections.TryGetValue(connectionId, out var client))
+            {
+                client.IsCandy = !client.IsCandy;
+            }
         }
+
+        public void Remove(string connectionId, out ConnectedClient removedConnection)
+            => connections.TryRemove(connectionId, out removedConnection);
     }
 }

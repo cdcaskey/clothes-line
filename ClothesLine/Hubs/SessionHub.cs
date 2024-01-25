@@ -18,14 +18,9 @@ namespace ClothesLine.Hubs
 
         public async Task JoinSession(string sessionId, string name, bool spectating, EstimationStyle? style)
         {
-            if (name.Equals("andy", StringComparison.InvariantCultureIgnoreCase))
-            {
-                name = "Candy";
-            }
-
             connections.Add(Context.ConnectionId, sessionId, name, spectating, style);
             await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
-            
+
             await UpdateGroup(sessionId);
         }
 
@@ -50,14 +45,19 @@ namespace ClothesLine.Hubs
         }
 
         public async Task ShowEstimates(string sessionId)
-        {
-            await Clients.Group(sessionId).SendAsync(Methods.ShowEstimates);
-        }
+            => await Clients.Group(sessionId).SendAsync(Methods.ShowEstimates);
 
         public async Task ClearEstimates(string sessionId)
         {
             connections.ClearEstimates(sessionId);
             await Clients.Group(sessionId).SendAsync(Methods.ClearEstimates);
+        }
+
+        public async Task ToggleCandy(string sessionId, string clientId)
+        {
+            connections.ToggleCandy(clientId);
+
+            await UpdateGroup(sessionId);
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)

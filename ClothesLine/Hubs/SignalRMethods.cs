@@ -16,6 +16,8 @@
             public const string ReceiveEstimate = "ReceiveEstimate";
             public const string ShowEstimates = "ShowEstimates";
             public const string ClearEstimates = "ClearEstimates";
+
+            public const string ToggleCandy = "ToggleCandy";
         }
     }
 }

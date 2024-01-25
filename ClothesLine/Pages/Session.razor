@@ -39,7 +39,7 @@
                         </InputRadioGroup>
                     </EditForm>
                 </div>
-            
+
                 <div class="button-toolbar" role="toolbar">
                     <div class="btn-group me-2" role="group">
                         <button @onclick="SendEstimate" class="btn btn-primary small-screen-full-width my-1" disabled="@(!IsConnected || SendEstimateAutomatically || Estimate < 0)">Send</button>
@@ -76,9 +76,11 @@
             <ul class="estimate-list">
                 @foreach (var connection in connections.OrderBy(x => x.Value.Spectating).ThenBy(x => x.Value.Name))
                 {
+                    var name = IsCandy ? "Candy" : connection.Value.IsCandy ? "Candy" : connection.Value.Name;
+
                     if (connection.Value.Spectating)
                     {
-                        <li class="@("spectating")"><span>@connection.Value.Name</span></li>
+                        <li class="@("spectating")"><span>@name</span></li>
 
                         continue;
                     }
@@ -87,20 +89,27 @@
                     {
                         if (showEstimates)
                         {
-                            <li class="@(IsOutlier(estimate) ? "estimate outlier" : "estimate ")"><span>@connection.Value.Name (@options[estimate])</span></li>
+                            <li class="@(IsOutlier(estimate) ? "estimate outlier" : "estimate ")"><span>@name (@options[estimate])</span></li>
                         }
                         else
                         {
-                            <li class="estimate"><span>@connection.Value.Name</span><span class="ms-2 oi oi-check" style="color: #28a745" /></li>
+                            <li class="estimate"><span>@name</span><span class="ms-2 oi oi-check" style="color: #28a745" /></li>
                         }
                     }
                     else
                     {
-                        <li class="@(showEstimates ? "missing-estimate" : "estimate")"><span>@connection.Value.Name</span></li>
+                        @if ((Client?.Name.Equals("Gemma ") ?? false) || (Client?.Name.Equals("Adam ") ?? false))
+                        {
+                            <li @onclick="async() => await ToggleCandy(connection.Key)" class="@(showEstimates ? "missing-estimate" : "estimate")"><span>@name</span></li>
+                        }
+                        else
+                        {
+                            <li class="@(showEstimates ? "missing-estimate" : "estimate")"><span>@name</span></li>
+                        }
                     }
                 }
             </ul>
-            
+
             @if (showEstimates)
             {
                 <h5>Average: @CalculateAverage()</h5>
@@ -186,6 +195,9 @@
         { 20, "7" },
         { 100, "8" },
     };
+
+    private ConnectedClient? Client => connections.FirstOrDefault(x => hubConnection?.ConnectionId.Equals(x.Key, StringComparison.InvariantCultureIgnoreCase) ?? false).Value;
+    private bool IsCandy => Client?.IsCandy ?? false;
 
     private HubConnection? hubConnection;
     private int estimate = -1;
@@ -307,6 +319,11 @@
 
             connections = new Dictionary<string, ConnectedClient>(connectedClients.Select(c => new KeyValuePair<string, ConnectedClient>(c.Id, c)));
 
+            foreach (var connection in connections.Values)
+            {
+                connection.Name = connection.Name.Replace('+', ' ');
+            }
+
             if (!estimates.Any())
             {
                 estimates = new Dictionary<string, int>();
@@ -381,6 +398,14 @@
 
         Spectating = spectating;
         StateHasChanged();
+    }
+
+    private async Task ToggleCandy(string clientId)
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.SendAsync(Methods.ToggleCandy, Id, clientId);
+        }
     }
 
     private async Task SendEstimate()

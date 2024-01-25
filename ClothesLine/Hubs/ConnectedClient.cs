@@ -13,5 +13,7 @@
         public int? Estimate { get; set; }
 
         public EstimationStyle? Style { get; set; }
+
+        public bool IsCandy { get; set; }
     }
 }
