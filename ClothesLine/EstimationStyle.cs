@@ -12,5 +12,7 @@ namespace ClothesLine
         Fruit,
         [Description("5️⃣ Five")]
         Five,
+        [Description("📅 Days-ish")]
+        Days
     }
 }
