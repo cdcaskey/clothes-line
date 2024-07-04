@@ -220,7 +220,16 @@
 
     private EstimationStyle? Style
     {
-        get => style;
+        get
+        {
+            // Todo: This better
+            if (Id.Equals("wobbits", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return EstimationStyle.Days;
+            }
+
+            return style;
+        }
         set
         {
             style = value;
