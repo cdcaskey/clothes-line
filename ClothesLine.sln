@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClothesLine", "ClothesLine\ClothesLine.csproj", "{0E1C2E38-CA42-488B-A3DD-D4B97925DF3E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WashingMachine.Tests", "WashingMachine.Tests\WashingMachine.Tests.csproj", "{3224D412-2D7A-4D85-9EE5-BB6EEACF8DB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WashingMachine", "WashingMachine\WashingMachine.csproj", "{E6E61A41-6E90-4988-9CA9-3D5762D6A679}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{0E1C2E38-CA42-488B-A3DD-D4B97925DF3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E1C2E38-CA42-488B-A3DD-D4B97925DF3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E1C2E38-CA42-488B-A3DD-D4B97925DF3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3224D412-2D7A-4D85-9EE5-BB6EEACF8DB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3224D412-2D7A-4D85-9EE5-BB6EEACF8DB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3224D412-2D7A-4D85-9EE5-BB6EEACF8DB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3224D412-2D7A-4D85-9EE5-BB6EEACF8DB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6E61A41-6E90-4988-9CA9-3D5762D6A679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6E61A41-6E90-4988-9CA9-3D5762D6A679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6E61A41-6E90-4988-9CA9-3D5762D6A679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6E61A41-6E90-4988-9CA9-3D5762D6A679}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
