@@ -1,5 +1,7 @@
-# Created by https://www.toptal.com/developers/gitignore/api/rider,webstorm,csharp,aspnetcore,react,macos,windows,linux
-# Edit at https://www.toptal.com/developers/gitignore?templates=rider,webstorm,csharp,aspnetcore,react,macos,windows,linux
+
+
+# Created by https://www.toptal.com/developers/gitignore/api/linux,macos,react,rider,csharp,windows,webstorm,aspnetcore,yarn
+# Edit at https://www.toptal.com/developers/gitignore?templates=linux,macos,react,rider,csharp,windows,webstorm,aspnetcore,yarn
 
 ### ASPNETCore ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -768,4 +770,21 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/rider,webstorm,csharp,aspnetcore,react,macos,windows,linux
+### yarn ###
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+
+*/.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# if you are NOT using Zero-installs, then:
+# comment the following lines
+!.yarn/cache
+
+# and uncomment the following lines
+# .pnp.*
+
+# End of https://www.toptal.com/developers/gitignore/api/linux,macos,react,rider,csharp,windows,webstorm,aspnetcore,yarn
