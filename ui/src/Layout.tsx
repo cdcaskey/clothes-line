@@ -34,12 +34,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         leftSection={<span className="material-symbols-outlined">home</span>}
                     />
                     <NavLink
-                        href="new-session"
+                        href="/session/new"
                         label="New Session"
                         leftSection={<span className="material-symbols-outlined">create</span>}
                     />
                     <NavLink
-                        href="join-session"
+                        href="/session/join"
                         label="Join Session"
                         leftSection={<span className="material-symbols-outlined">groups</span>}
                     />

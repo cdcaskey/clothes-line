@@ -39,7 +39,7 @@ export function SignalRExample() {
   };
 
   return (
-    <Stack spacing="md" p="md">
+    <Stack p="md">
       <Title order={2}>SignalR Chat Example</Title>
 
       {connectionError && (
@@ -60,7 +60,7 @@ export function SignalRExample() {
         disabled={sendingMessage}
       />
 
-      <Stack spacing="xs" style={{ height: '300px', overflowY: 'auto', border: '1px solid #eee', padding: '10px' }}>
+      <Stack style={{ height: '300px', overflowY: 'auto', border: '1px solid #eee', padding: '10px' }}>
         {messages.length === 0 ? (
           <Text c="dimmed" ta="center" pt="xl">No messages yet. Start chatting!</Text>
         ) : (
