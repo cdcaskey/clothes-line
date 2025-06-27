@@ -693,11 +693,11 @@ fabric.properties
 # https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 
 ui/.yarn/*
-ui/!.yarn/releases
-ui/!.yarn/patches
-ui/!.yarn/plugins
-ui/!.yarn/sdks
-ui/!.yarn/versions
+!ui/.yarn/releases
+!ui/.yarn/patches
+!ui/.yarn/plugins
+!ui/.yarn/sdks
+!ui/.yarn/versions
 
 # if you are NOT using Zero-installs, then:
 # comment the following lines
