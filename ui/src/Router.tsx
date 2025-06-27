@@ -7,7 +7,7 @@ import {JoinSessionPage} from "@/pages/JoinSession.page";
 
 const router = createHashRouter([
   {
-    path: '/',
+    path: '',
     element: <HomePage />,
   },
   {
