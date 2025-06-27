@@ -31,6 +31,7 @@ jobs:
         with:
           node-version: "18"
           cache: "npm"
+          working-directory: ./ui
 
       - name: Install dependencies
         run: cd ui && npm ci
