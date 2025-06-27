@@ -685,3 +685,25 @@ fabric.properties
 !.idea/runConfigurations
 
 # End of https://www.toptal.com/developers/gitignore/api/rider,csharp,dotnetcore,aspnetcore,webstorm+all,react
+
+# Created by https://www.toptal.com/developers/gitignore/api/yarn
+# Edit at https://www.toptal.com/developers/gitignore?templates=yarn
+
+### yarn ###
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+
+ui/.yarn/*
+ui/!.yarn/releases
+ui/!.yarn/patches
+ui/!.yarn/plugins
+ui/!.yarn/sdks
+ui/!.yarn/versions
+
+# if you are NOT using Zero-installs, then:
+# comment the following lines
+!.yarn/cache
+
+# and uncomment the following lines
+# .pnp.*
+
+# End of https://www.toptal.com/developers/gitignore/api/yarn
