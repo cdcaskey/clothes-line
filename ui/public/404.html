@@ -6,27 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Primary Meta Tags -->
-  <title>Page Not Found - Arjun Kumar | Full Stack Developer</title>
-  <meta name="title" content="Page Not Found - Arjun Kumar | Full Stack Developer" />
-  <meta name="description"
-        content="The page you're looking for doesn't exist. Return to Arjun Kumar's developer portfolio to explore projects, blog posts, and professional experience." />
-  <meta name="robots" content="noindex, nofollow" />
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://arjun-computer-geek.github.io/404" />
-  <meta property="og:title" content="Page Not Found - Arjun Kumar | Full Stack Developer" />
-  <meta property="og:description"
-        content="The page you're looking for doesn't exist. Return to Arjun Kumar's developer portfolio." />
-  <meta property="og:image" content="https://arjun-computer-geek.github.io/opengraph-arjun.png" />
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://arjun-computer-geek.github.io/404" />
-  <meta property="twitter:title" content="Page Not Found - Arjun Kumar | Full Stack Developer" />
-  <meta property="twitter:description"
-        content="The page you're looking for doesn't exist. Return to Arjun Kumar's developer portfolio." />
-  <meta property="twitter:image" content="https://arjun-computer-geek.github.io/opengraph-arjun.png" />
+  <title>Page Not Found - Clothes Line</title>
 
   <!-- Favicon -->
   <link rel="icon" href="/favicon.ico" />
@@ -45,8 +25,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      color: black;
     }
 
     .container {
@@ -59,7 +38,7 @@
       font-size: 6rem;
       margin: 0;
       font-weight: 700;
-      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      background: linear-gradient(-90deg, dodgerblue, blue);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -81,7 +60,7 @@
     .btn {
       display: inline-block;
       padding: 12px 24px;
-      background: linear-gradient(45deg, #667eea, #764ba2);
+      background: linear-gradient(-90deg, dodgerblue, blue);
       color: white;
       text-decoration: none;
       border-radius: 8px;
@@ -118,16 +97,16 @@
   // This script takes the current url and converts the path and query
   // string into just a query string, and then redirects the browser
   // to the new url with only a query string and hash fragment.
-  var pathSegmentsToKeep = 0;
-
-  var l = window.location;
-  l.replace(
-          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-          l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-          l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-          l.hash
-  );
+  // var pathSegmentsToKeep = 0;
+  //
+  // var l = window.location;
+  // l.replace(
+  //         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+  //         l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+  //         l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+  //         (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+  //         l.hash
+  // );
 
   // Countdown redirect
   let countdown = 5;
