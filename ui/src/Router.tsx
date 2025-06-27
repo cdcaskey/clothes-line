@@ -1,11 +1,11 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {createBrowserRouter, createHashRouter, RouterProvider} from 'react-router-dom';
 import { HomePage } from './pages/Home.page';
 import { SignalRProvider } from '@/services/signalr';
 import { SessionPage } from './pages/Session.page';
 import {NewSessionPage} from "@/pages/NewSession.page";
 import {JoinSessionPage} from "@/pages/JoinSession.page";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <HomePage />,
