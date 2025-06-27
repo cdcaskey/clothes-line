@@ -11,7 +11,7 @@ const router = createHashRouter([
     element: <HomePage />,
   },
   {
-    path: '/session/:sessionId',
+    path: 'session/:sessionId',
     element: (
         <SignalRProvider hubUrl="https://washing-machine-fgfmdbd7bhgqhmdz.ukwest-01.azurewebsites.net/sessionHub" autoConnect={true}>
           <SessionPage />
@@ -19,15 +19,15 @@ const router = createHashRouter([
     ),
   },
   {
-    path: '/session/new',
+    path: 'session/new',
     element: <NewSessionPage />
   },
   {
-    path: '/session/join',
+    path: 'session/join',
     element: <JoinSessionPage />
   },
   {
-    path: '/session/:sessionId/join',
+    path: 'session/:sessionId/join',
     element: <JoinSessionPage />
   },
 ]);
