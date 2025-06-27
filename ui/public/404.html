@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <title>Page Not Found - Arjun Kumar | Full Stack Developer</title>
+    <meta name="title" content="Page Not Found - Arjun Kumar | Full Stack Developer" />
+    <meta name="description"
+        content="The page you're looking for doesn't exist. Return to Arjun Kumar's developer portfolio to explore projects, blog posts, and professional experience." />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://arjun-computer-geek.github.io/404" />
+    <meta property="og:title" content="Page Not Found - Arjun Kumar | Full Stack Developer" />
+    <meta property="og:description"
+        content="The page you're looking for doesn't exist. Return to Arjun Kumar's developer portfolio." />
+    <meta property="og:image" content="https://arjun-computer-geek.github.io/opengraph-arjun.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://arjun-computer-geek.github.io/404" />
+    <meta property="twitter:title" content="Page Not Found - Arjun Kumar | Full Stack Developer" />
+    <meta property="twitter:description"
+        content="The page you're looking for doesn't exist. Return to Arjun Kumar's developer portfolio." />
+    <meta property="twitter:image" content="https://arjun-computer-geek.github.io/opengraph-arjun.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 6rem;
+            margin: 0;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin: 1rem 0 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            margin: 2rem 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>404</h1>
+        <h2>Page Not Found</h2>
+        <p>Oops! The page you're looking for doesn't exist. It might have been moved, deleted, or you entered the wrong
+            URL.</p>
+        <a href="/" class="btn">Go Back Home</a>
+        <div class="loading">Redirecting to homepage in <span id="countdown">5</span> seconds...</div>
+    </div>
+
+    <script type="text/javascript">
+        // Single Page Apps for GitHub Pages
+        // MIT License
+        // https://github.com/rafgraph/spa-github-pages
+        // This script takes the current url and converts the path and query
+        // string into just a query string, and then redirects the browser
+        // to the new url with only a query string and hash fragment.
+        var pathSegmentsToKeep = 0;
+
+        var l = window.location;
+        l.replace(
+            l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+            l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+            l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+            (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+            l.hash
+        );
+
+        // Countdown redirect
+        let countdown = 5;
+        const countdownElement = document.getElementById('countdown');
+
+        const timer = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+
+            if (countdown <= 0) {
+                clearInterval(timer);
+                window.location.href = '/';
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>

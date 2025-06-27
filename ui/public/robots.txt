@@ -1,0 +1,48 @@
+# Robots.txt for Arjun Kumar's Developer Portfolio
+# https://arjun-computer-geek.github.io/
+
+# Allow all major search engine bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# Social media bots
+User-agent: Twitterbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: facebookexternalhit
+Allow: /
+Crawl-delay: 1
+
+User-agent: LinkedInBot
+Allow: /
+Crawl-delay: 1
+
+# Allow all other bots
+User-agent: *
+Allow: /
+Crawl-delay: 2
+
+# Disallow specific paths (if any)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/
+
+# Sitemap location
+Sitemap: https://arjun-computer-geek.github.io/sitemap.xml
+
+# Host
+Host: https://arjun-computer-geek.github.io
