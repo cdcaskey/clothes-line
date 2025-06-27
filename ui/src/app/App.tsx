@@ -10,10 +10,12 @@ import {NotFoundPage} from "../features/errors/404/NotFound.tsx";
 import {IndexPage} from "../features/index/Index.tsx";
 
 export default function App() {
+    const Router =
+        process.env.NODE_ENV === "production" ? HashRouter : BrowserRouter;
   return (
       <MantineProvider theme={theme} defaultColorScheme={"auto"}>
           <Layout>
-          <BrowserRouter>
+          <Router>
               <Routes>
                   <Route path="/" element={<IndexPage />} />
                   <Route path="/session/:sessionId" element={<SessionPage />} />
@@ -22,7 +24,7 @@ export default function App() {
                   <Route path="/session/join" element={<JoinSessionPage />} />
                   <Route path="*" element={<NotFoundPage />} />
               </Routes>
-          </BrowserRouter>
+          </Router>
           </Layout>
       </MantineProvider>
   );
