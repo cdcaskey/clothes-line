@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export function NewSessionPage() {
     const [name, setName] = useState('');
-    const [sessionType, setSessionType] = useState('');
+    const [sessionType, setSessionType] = useState('tshirt');
     const [saveName, setSaveName] = useState(false);
     const navigate = useNavigate();
 
@@ -28,13 +28,15 @@ export function NewSessionPage() {
             localStorage.removeItem('userName');
         }
 
+        const sessionId = crypto.randomUUID().slice(-5);
+
         // Navigate to session page
-        navigate('/session');
+        navigate(`/session/${sessionId}?type=${sessionType}&name=${name}`);
     };
 
     return (
         <Stack gap="lg" p="md">
-            <Title order={1}>New Session</Title>
+            <Title>New Session</Title>
 
             <Paper p="md" withBorder radius="md" shadow="sm">
                 <form onSubmit={handleSubmit}>
@@ -51,11 +53,11 @@ export function NewSessionPage() {
                             label="Session Type"
                             placeholder="Select session type"
                             data={[
-                                { value: 'planning', label: 'Planning' },
-                                { value: 'retrospective', label: 'Retrospective' },
-                                { value: 'discussion', label: 'Discussion' }
+                                { value: 'tshirt', label: 'T-Shirt' },
+                                { value: 'number', label: 'Number' }
                             ]}
                             value={sessionType}
+
                             onChange={(value) => setSessionType(value || '')}
                             required
                         />
