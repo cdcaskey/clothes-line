@@ -1,4 +1,4 @@
-import { Paper, Title } from '@mantine/core';
+import { Paper, Title, Text } from '@mantine/core';
 
 interface StageProps {
   name: string;
@@ -6,7 +6,7 @@ interface StageProps {
   sessionType?: string;
 }
 
-export function Stage({ sessionId }: StageProps) {
+  export function Stage({ name, sessionId, sessionType }: StageProps) {
   return (
     <Paper
       p="xl"
@@ -15,6 +15,8 @@ export function Stage({ sessionId }: StageProps) {
       withBorder
     >
       <Title>Session {sessionId}</Title>
+      {name && <Text>Participant: {name}</Text>}
+      {sessionType && <Text>Type: {sessionType}</Text>}
     </Paper>
   );
 }

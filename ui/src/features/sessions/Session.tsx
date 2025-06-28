@@ -1,4 +1,5 @@
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import {Stage} from "./components/Stage.tsx";
 import {Box, Grid, Stack} from "@mantine/core";
 import {Estimates} from "./components/Estimates.tsx";
@@ -6,12 +7,21 @@ import {Explanation} from "./components/Explanation.tsx";
 
 export function SessionPage() {
     const params = useParams<{ sessionId: string }>();
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const name = searchParams.get("name") || "Anonymous";
+    const name = searchParams.get("name") || "";
     const sessionType = searchParams.get("sessionType") || undefined;
 
-    if (!params.sessionId) {
-        throw Error("Session ID is required");
+    useEffect(() => {
+        if (!name) {
+            navigate(`/session/${params.sessionId}/join`);
+            return;
+        }
+    }, [name, params.sessionId, navigate]);
+
+    // Don't render until we have the required data
+    if (!name || !params.sessionId) {
+        return null; // Render nothing while redirecting
     }
 
     return (

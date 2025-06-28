@@ -18,6 +18,7 @@ export default function App() {
                   <Route path="/" element={<IndexPage />} />
                   <Route path="/session/:sessionId" element={<SessionPage />} />
                   <Route path="/session/new" element={<NewSessionPage />} />
+                  <Route path="/session" element={<NewSessionPage />} />
                   <Route path="/session/:sessionId/join" element={<JoinSessionPage />} />
                   <Route path="/session/join" element={<JoinSessionPage />} />
                   <Route path="*" element={<NotFoundPage />} />
