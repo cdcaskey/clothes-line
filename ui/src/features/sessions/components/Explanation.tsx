@@ -7,9 +7,6 @@ export function Explanation() {
             shadow="md"
             radius="md"
             withBorder
-            sx={(theme) => ({
-                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
-            })}
         >
             <Title order={3} mb="md">Explanation</Title>
             <Text>

@@ -6,16 +6,13 @@ interface StageProps {
   sessionType?: string;
 }
 
-export function Stage({ name, sessionId, sessionType }: StageProps) {
+export function Stage({ sessionId }: StageProps) {
   return (
     <Paper
       p="xl"
       shadow="md"
       radius="md"
       withBorder
-      sx={(theme) => ({
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
-      })}
     >
       <Title>Session {sessionId}</Title>
     </Paper>

@@ -7,9 +7,6 @@ export function Estimates() {
             shadow="md"
             radius="md"
             withBorder
-            sx={(theme) => ({
-                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
-            })}
         >
             <Title>Estimates</Title>
         </Paper>

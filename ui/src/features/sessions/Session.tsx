@@ -6,9 +6,13 @@ import {Explanation} from "./components/Explanation.tsx";
 
 export function SessionPage() {
     const params = useParams<{ sessionId: string }>();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const name = searchParams.get("name") || "Anonymous";
-    const sessionType = searchParams.get("sessionType") || "discussion";
+    const sessionType = searchParams.get("sessionType") || undefined;
+
+    if (!params.sessionId) {
+        throw Error("Session ID is required");
+    }
 
     return (
         <Box p="md">
@@ -16,7 +20,7 @@ export function SessionPage() {
                 <Box visibleFrom="md" className="desktop-grid">
                     <Grid gutter="md" mb="md">
                         <Grid.Col span={7}>
-                            <Stage name={name} sessionId={params.sessionId} sessionType={sessionType}/>
+                            <Stage name={name} sessionId={params.sessionId} sessionType={sessionType} />
                         </Grid.Col>
                         <Grid.Col span={5}>
                             <Estimates/>
@@ -26,8 +30,8 @@ export function SessionPage() {
                 </Box>
 
                 {/* Mobile layout */}
-                <Stack hiddenFrom="md" className="mobile-stack" spacing="md">
-                    <Stage name={name} sessionType={sessionType}/>
+                <Stack hiddenFrom="md" className="mobile-stack">
+                    <Stage name={name} sessionId={params.sessionId} sessionType={sessionType} />
                     <Estimates/>
                     <Explanation/>
                 </Stack>
