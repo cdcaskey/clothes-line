@@ -45,7 +45,7 @@ export function JoinSessionPage() {
         }
 
         // Navigate to session page with the session ID
-        navigate(`/session/${sessionId}`);
+        navigate(`/session/${sessionId}?name=${name}`);
     };
 
     return (
