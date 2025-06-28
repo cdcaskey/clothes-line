@@ -90,38 +90,13 @@
   <div class="loading">Redirecting to homepage in <span id="countdown">5</span> seconds...</div>
 </div>
 
-<script type="text/javascript">
-  // Single Page Apps for GitHub Pages
-  // MIT License
-  // https://github.com/rafgraph/spa-github-pages
-  // This script takes the current url and converts the path and query
-  // string into just a query string, and then redirects the browser
-  // to the new url with only a query string and hash fragment.
-  var pathSegmentsToKeep = 0;
-
-  var l = window.location;
-  l.replace(
-          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-          l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/#/' +
-          l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-          l.hash
-  );
-
-  // Countdown redirect
-  let countdown = 5;
-  const countdownElement = document.getElementById('countdown');
-
-  const timer = setInterval(() => {
-    countdown--;
-    countdownElement.textContent = countdown;
-
-    if (countdown <= 0) {
-      clearInterval(timer);
-      window.location.href = '/';
-    }
-  }, 1000);
+<script>
+  const path = window.location.pathname;
+  if (path !== "/") {
+    window.location.href = "/#" + path;
+  }
 </script>
+
 </body>
 
 </html>
